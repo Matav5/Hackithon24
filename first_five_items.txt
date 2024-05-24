@@ -1,6 +1,6 @@
 _id	count
 {'hour': '2024-05-24T20:00:00Z', 'topic': '/ttndata'}	79
 {'hour': '2024-05-24T20:00:00Z', 'topic': '/vodomery/decin'}	55
-{'hour': '2024-05-24T20:00:00Z', 'topic': '/Bilina/kamery/camea/Unknown'}	10
 {'hour': '2024-05-24T20:00:00Z', 'topic': '/Bilina/kamery/camea/BI-TP-O2'}	10
-{'hour': '2024-05-24T20:00:00Z', 'topic': '/Bilina/kamery/camea/BI-TP-I2'}	7
+{'hour': '2024-05-24T20:00:00Z', 'topic': '/Bilina/kamery/camea/Unknown'}	10
+{'hour': '2024-05-24T20:00:00Z', 'topic': '/Bilina/kamery/camea/BI-TP-R2'}	7
