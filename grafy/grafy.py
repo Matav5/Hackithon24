@@ -18,7 +18,10 @@ def scatter_plot(x_categories, y_values, title='Bodový graf', marker_size=15):
                                      marker=dict(size=marker_size))])
     fig.update_layout(title=title, xaxis_title='Kategorie', yaxis_title='Hodnoty', 
                       yaxis=dict(gridcolor='lightgray'), plot_bgcolor='rgba(0,0,0,0)', 
-                      paper_bgcolor='rgba(0,0,0,0)')
+                      paper_bgcolor='rgba(0,0,0,0)',
+                      xaxis=dict(
+            tickformat='%H:%M:%S'  # Format the x-axis to show only time
+        ))
     return fig
 
 def area_chart(x_categories, y_values, title='Plošný graf'):
@@ -26,7 +29,10 @@ def area_chart(x_categories, y_values, title='Plošný graf'):
                                      line=dict(color='royalblue'))])
     fig.update_layout(title=title, xaxis_title='Kategorie', yaxis_title='Hodnoty', 
                       yaxis=dict(gridcolor='lightgray'), plot_bgcolor='rgba(0,0,0,0)', 
-                      paper_bgcolor='rgba(0,0,0,0)')
+                      paper_bgcolor='rgba(0,0,0,0)',
+                      xaxis=dict(
+            tickformat='%H:%M:%S'  # Format the x-axis to show only time
+        ))
     return fig
 
 def pie_chart(labels, values, title='Koláčový graf'):
@@ -65,14 +71,25 @@ def time_series_chart(timestamps, throughput_values, title='Časový graf throug
                                      line=dict(color='firebrick', width=2))])
     fig.update_layout(title=title, xaxis_title='Čas', yaxis_title='Throughput (jednotky/s)', 
                       yaxis=dict(gridcolor='lightgray'), plot_bgcolor='rgba(0,0,0,0)', 
-                      paper_bgcolor='rgba(0,0,0,0)')
+                      paper_bgcolor='rgba(0,0,0,0)',
+                      xaxis=dict(
+            tickformat='%H:%M:%S'  # Format the x-axis to show only time
+        ))
     return fig
 
 def bar_chart(x_categories, y_values, title='Sloupcový graf'):
     fig = go.Figure(data=[go.Bar(x=x_categories, y=y_values, marker_color='indianred')])
-    fig.update_layout(title=title, xaxis_title='Kategorie', yaxis_title='Hodnoty', 
-                      yaxis=dict(gridcolor='lightgray'), plot_bgcolor='rgba(0,0,0,0)', 
-                      paper_bgcolor='rgba(0,0,0,0)')
+    fig.update_layout(
+        title=title, 
+        xaxis_title='Kategorie', 
+        yaxis_title='Hodnoty', 
+        yaxis=dict(gridcolor='lightgray'), 
+        plot_bgcolor='rgba(0,0,0,0)', 
+        paper_bgcolor='rgba(0,0,0,0)',
+        xaxis=dict(
+            tickformat='%H:%M:%S'  # Format the x-axis to show only time
+        )
+    )
     return fig
 
 def histogram(data, title='Histogram'):
