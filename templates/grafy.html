@@ -2,11 +2,11 @@
 
 <!---Sem text?-->
 {% block content %}
-    <div class="container mt-5">
+    <div class="container mt-5" style="background-color: #f8f9fa;">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-12" style="background-color: #e9ecef; padding: 20px; border-radius: 10px;">
                 <h1>Graf page</h1>
-                <p class="text-block">Tento graf poskytuje vizuální reprezentaci statistických dat rozdělených do kategorií. 
+                <p>Tento graf poskytuje vizuální reprezentaci statistických dat rozdělených do kategorií. 
                     Každá kategorie je zobrazena jako sloupec, jehož výška odpovídá hodnotě dané kategorie, což umožňuje rychlý přehled o 
                     rozdílech mezi jednotlivými kategoriemi.</p>
             </div>
@@ -16,11 +16,15 @@
 
 <!---Sem grafy-->
 {% block main %}
-    <div class="container">
+    <div class="container mt-5" style="background-color: #f8f9fa;">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-12 mb-5" style="background-color: #e9ecef; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
                 <div class="d-flex justify-content-center">
                     {{ plot_scatter|safe }}
+                </div>
+            </div>
+            <div class="col-md-12 mb-5" style="background-color: #e9ecef; padding: 20px; border-radius: 10px;">
+                <div class="d-flex justify-content-center">
                     {{ plot_bar|safe }}
                 </div>
             </div>

@@ -1,6 +1,8 @@
 import plotly.graph_objects as go
 import numpy as np
 
+
+# Najít graf stromové struktury
 # Data for the charts
 timestamps = ['2024-01-01', '2024-01-02', '2024-01-03', '2024-01-04']
 throughput_values = [100, 120, 130, 110]
