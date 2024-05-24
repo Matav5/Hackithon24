@@ -33,14 +33,23 @@ def clean_topics(data):
             return 'UDP'
         elif '/voda/' in topic:
             return 'Voda KA'
-        elif '/vodomery/' in topic:
+        elif '/vodomery/' or '/voda' in topic:
             return 'Vodoměry Děčín'
+        elif '/senzory/wifi' in topic:
+            return 'WiFi Senzory'
+        elif '/mve/' in topic:
+            return 'Vodní Elektrárna'
+        elif '/povodnova-cidla' in topic:
+            return 'Povodnová Čidla'
         return topic
 
-    # Vytvoření nového sloupce 'cleaned_topic' s upravenými topicy
+    # Vytvoření nového sloupce 'cleaned_topic' s upravenmi topicy
     data['cleaned_topic'] = data['_id'].apply(lambda x: format_topic(x['topic']))
 
-    return data
+    # Počítání výskytů jednotlivých témat
+    topic_counts = data['cleaned_topic'].value_counts().to_dict()
+
+    return topic_counts
 
 # Načtení dat z MongoDB
 data_list = list(collection_hourlytopic.find())
@@ -52,11 +61,11 @@ data_frame = pd.DataFrame(data_list)
 
 print(data_frame[:5])
 data_frame[:5].to_csv('first_five_items.txt', sep='\t', index=False)
-topics = data_frame['_id'].apply(lambda x: x['topic']).tolist()
+topics = (data_frame['_id'].apply(lambda x: x['topic']).tolist(), data_frame['count'].tolist())
 
 print(topics)  # Vypíše seznam topiců
 #parse_mongo_data_by_hourlytopic(data_frame)
 
 # Použití funkce clean_topics na celý DataFrame
-data_frame = clean_topics(data_frame)
-print(data_frame[['cleaned_topic']])  # Vypíše nový sloupec s upravenými topicy
+topic_counts = clean_topics(data_frame)
+print(topic_counts)  # Vypíše slovník s počty výskytů jednotlivých témat
