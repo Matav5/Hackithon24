@@ -31,13 +31,17 @@
             padding: 10px 0;
         }
         .nav-link {
-        font-size: 20px; /* Zvětšení textu */
-        padding-right: 20px; /* Odsazení od pravého kraje */
+        font-size: 20px;
+        padding-right: 25px;
+        }
+        .navbar-brand {
+            font-size: 25px;
+            font-family: 'Arial', sans-serif;
         }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="padding: 20px;">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="padding: 25px;">
         <a class="navbar-brand" href="/">Helpful!</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -67,12 +71,15 @@
     {% endblock %}
     </main>
 
+
     <div class="footer">
         <p style="font-size: 16px; font-family: Arial, sans-serif;">&copy; 2024 Helpful!</p>
     </div>
+
     <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>
