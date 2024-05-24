@@ -17,10 +17,6 @@ def domov():
 
 @app.route('/grafy')
 def graf():
-    """
-    x_values = [random.uniform(0, 500) for _ in range(10)]
-    y_values = [random.uniform(0, 100) for _ in range(10)]
-    """
     # temp data na test
     fig_scatter = grafy.scatter_plot(timestamps, messages_per_second).to_html(full_html=False)
     fig_bar = grafy.bar_chart(timestamps, data_flow_bps).to_html(full_html=False)
