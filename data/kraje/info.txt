@@ -1,0 +1,71 @@
+
+kraje_polygony: https://data24.carto.com/tables/kraje_polygony/public/map
+
+
+https://github.com/JirkaChadima/cz-region-boundaries
+
+https://data24.carto.com/builder/5b13bfd1-f350-4bc9-a613-f6b16cce40c0/embed?state=%7B%22map%22%3A%7B%22ne%22%3A%5B49.78481090512662%2C14.132537841796877%5D%2C%22sw%22%3A%5B50.425143628159596%2C16.14303588867188%5D%2C%22center%22%3A%5B50.10618905581711%2C15.137786865234377%5D%2C%22zoom%22%3A10%7D%7D
+
+
+https://github.com/siwekm/czech-geojson
+
+
+db.kraje.find({
+  "features.geometry": {
+    $geoWithin: {
+      $centerSphere: [[14.532169, 50.176091], 1/ 6378.1] 
+    }
+  }
+}).projection({
+  "features.geometry": 1,
+  "dist.calculated": 1,
+  "dist.location": 1
+});
+
+
+db.kraje.find({
+  "features.geometry": {
+    $geoWithin: {
+      $centerSphere: [[ 14.516580424220507,
+          50.14819107136816], 1/ 6378.1] 
+    }
+  }
+}).projection({
+  "features.geometry": 1,
+  "dist.calculated": 1,
+  "dist.location": 1
+});
+
+db.kraje.aggregate([
+  {
+       $match: {
+       "features.geometry": {
+        $geoWithin: {
+      $centerSphere: [[ 14.516580424220507,
+          50.14819107136816], 1 / 6378.1] // Earth radius in kilometers
+    }
+       }
+       }
+  },
+  {
+    $project: {
+      name: "$features.properties.naz_cznuts3", // Project only the name field
+      _id: 0 // Exclude the _id field from the result
+    }
+  }
+]);
+
+
+db.kraje.find({
+  "features.geometry": {
+    $geoWithin: {
+      $centerSphere: [[ 14.516580424220507,
+          50.14819107136816], 1/ 6378.1] 
+    }
+  },
+  "features.properties.name": 1
+}).projection({
+  "features.geometry": 1,
+  "dist.calculated": 1,
+  "dist.location": 1
+});
