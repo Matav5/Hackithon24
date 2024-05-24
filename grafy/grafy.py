@@ -8,17 +8,17 @@ import os
 
 def scatter_plot(x_categories, y_values, title='Bodový graf'):
     fig = go.Figure(data=[go.Scatter(x=x_categories, y=y_values, mode='markers')])
-    fig.update_layout(title=title)
+    fig.update_layout(title=title, plot_bgcolor='rgba(0,0,0,0)')
     return fig
 
 def area_chart(x_categories, y_values, title='Plošný graf'):
     fig = go.Figure(data=[go.Scatter(x=x_categories, y=y_values, fill='tozeroy')])
-    fig.update_layout(title=title)
+    fig.update_layout(title=title, plot_bgcolor='rgba(0,0,0,0)')
     return fig
 
 def pie_chart(labels, values, title='Koláčový graf'):
     fig = go.Figure(data=[go.Pie(labels=labels, values=values)])
-    fig.update_layout(title=title)
+    fig.update_layout(title=title, plot_bgcolor='rgba(0,0,0,0)')
     return fig
 
 def time_series_chart(timestamps, throughput_values, title='Časový graf throughputu'):
@@ -28,6 +28,6 @@ def time_series_chart(timestamps, throughput_values, title='Časový graf throug
 
 def bar_chart(x_categories, y_values, title='Sloupcový graf'):
     fig = go.Figure(data=[go.Bar(x=x_categories, y=y_values)])
-    fig.update_layout(title=title)
+    fig.update_layout(title=title, plot_bgcolor='rgba(0,0,0,0)')
     return fig
 
