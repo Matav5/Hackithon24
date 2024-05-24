@@ -1,148 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Helpful Ap - Grafy</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        html, body {
-            height: 100%;
-        }
-        body {
-            display: flex;
-            flex-direction: column;
-        }
-        .content {
-            flex: 1;
-        }
-        .footer {
-            position: fixed;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            background-color: #343a40;
-            color: white;
-            text-align: center;
-            padding: 5px 0;
-        }
-        .graph-container {
-            padding: 20px;
-        }
-        .graph {
-            margin: 20px 0;
-        }
-        .row {
-            display: flex;
-            flex-wrap: wrap;
-        }
-        .col {
-            flex: 1 1 50%;
-            padding: 10px;
-            max-width: 50%;
-        }
-    </style>
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="padding: 25px;">
-        <a class="navbar-brand" href="/">Helpful!</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Grafy</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Data</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+{% extends 'index.html' %}
 
-    <div class="content container">
-        <div class="graph-container">
-            <h1>Grafy</h1>
-            <div class="row">
-                <div class="col">
-                    <div class="graph" id="messages-per-second">
-                        <h2>Messages per Second</h2>
-                        <div id="messagesChart"></div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="graph" id="data-flow">
-                        <h2>Data Flow (bps)</h2>
-                        <div id="dataFlowChart"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div class="graph" id="combined-graph">
-                        <h2>Combined Graph</h2>
-                        <div id="combinedChart"></div>
-                    </div>
-                </div>
-                <!-- Add more graphs here as needed -->
+<!---Sem text?-->
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h1>Graf page</h1>
+                <p class="text-block">Tento graf poskytuje vizuální reprezentaci statistických dat rozdělených do kategorií. 
+                    Každá kategorie je zobrazena jako sloupec, jehož výška odpovídá hodnotě dané kategorie, což umožňuje rychlý přehled o 
+                    rozdílech mezi jednotlivými kategoriemi.</p>
             </div>
         </div>
     </div>
+{% endblock %}
 
-    <div class="footer">
-        <p style="font-size: 16px; font-family: Arial, sans-serif;">&copy; 2024 Helpful!</p>
+<!---Sem grafy-->
+{% block main %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="d-flex justify-content-center">
+                    {{ plot_scatter|safe }}
+                    {{ plot_bar|safe }}
+                </div>
+            </div>
+        </div>
     </div>
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <!-- Plotly.js -->
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script>
-        // Placeholder for Plotly graphs
-        var trace1 = {
-            x: ["2024-05-24T21:14:30", "2024-05-24T21:14:31", "2024-05-24T21:14:32", "2024-05-24T21:14:33", "2024-05-24T21:14:34", "2024-05-24T21:14:35"],
-            y: [10, 12, 8, 15, 11, 14],
-            type: 'scatter'
-        };
-        var data1 = [trace1];
-        Plotly.newPlot('messagesChart', data1);
-
-        var trace2 = {
-            x: ["2024-05-24T21:14:30", "2024-05-24T21:14:31", "2024-05-24T21:14:32", "2024-05-24T21:14:33", "2024-05-24T21:14:34", "2024-05-24T21:14:35"],
-            y: [8000, 9500, 7000, 12000, 8500, 11000],
-            type: 'bar'
-        };
-        var data2 = [trace2];
-        Plotly.newPlot('dataFlowChart', data2);
-
-        var trace3_1 = {
-            x: ["2024-05-24T21:14:30", "2024-05-24T21:14:31", "2024-05-24T21:14:32", "2024-05-24T21:14:33", "2024-05-24T21:14:34", "2024-05-24T21:14:35"],
-            y: [10, 12, 8, 15, 11, 14],
-            type: 'scatter',
-            name: 'Messages per Second'
-        };
-        var trace3_2 = {
-            x: ["2024-05-24T21:14:30", "2024-05-24T21:14:31", "2024-05-24T21:14:32", "2024-05-24T21:14:33", "2024-05-24T21:14:34", "2024-05-24T21:14:35"],
-            y: [8000, 9500, 7000, 12000, 8500, 11000],
-            type: 'bar',
-            name: 'Data Flow (bps)',
-            yaxis: 'y2'
-        };
-        var data3 = [trace3_1, trace3_2];
-        var layout3 = {
-            yaxis: {title: 'Messages per Second'},
-            yaxis2: {
-                title: 'Data Flow (bps)',
-                overlaying: 'y',
-                side: 'right'
-            }
-        };
-        Plotly.newPlot('combinedChart', data3, layout3);
-    </script>
-</body>
-</html>
+{% endblock %}
