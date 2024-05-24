@@ -4,12 +4,14 @@ app = Flask(__name__)
 
 @app.route('/') 
 def domov():
-    return render_template('index.html')
+    return render_template('home.html')
 
+"""
 @app.route('/graf')
 def graf():
     fig = grafy.mapa()
     return render_template('graf.html', plot=fig.to_html(full_html=False))
+"""
 
 
 if __name__ == '__main__':
