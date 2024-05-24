@@ -21,3 +21,11 @@ def pie_chart(labels, values, title='Koláčový graf'):
     fig = go.Figure(data=[go.Pie(labels=labels, values=values)])
     fig.update_layout(title=title)
     return fig
+
+
+def time_series_chart(timestamps, throughput_values, title='Časový graf throughputu'):
+    fig = go.Figure(data=[go.Scatter(x=timestamps, y=throughput_values)])
+    fig.update_layout(title=title, xaxis_title='Čas', yaxis_title='Throughput (jednotky/s)')
+    return fig
+
+
