@@ -81,6 +81,7 @@ def graf():
                            plot_box_plot=fig_box_plot,
                            plot_treemap=fig_treemap)
 
+
 @app.route('/filter', methods=['GET', 'POST'])
 def filter(): 
     topics = {
@@ -89,12 +90,22 @@ def filter():
         "topic3": ["category1", "category2"]
     }
     if request.method == 'POST':
-        selected_topic = request.form['topic']
-        selected_category = request.form['category']
-        # Process the selected topic and category as needed
-        # For example, filter data based on these selections
-        #return render_template('results.html', selected_topic=selected_topic, selected_category=selected_category)
-        pass
+        from datetime import datetime
+
+        start_date = request.form['start_date']
+        end_date = request.form['end_date']
+        
+        start_date_dt = datetime.fromisoformat(start_date)
+        end_date_dt = datetime.fromisoformat(end_date)
+
+        # datetime picker -> str -> datetime
+        start_date_formatted = start_date_dt.strftime('%Y, %m, %d, %H, %M')
+        end_date_formatted = end_date_dt.strftime('%Y, %m, %d, %H, %M')
+        print(start_date_formatted)
+        print(end_date_formatted)
+        # dořešit možnou 0 na datumu nebo dni - pokud len(datum/mesic) neni 2
+
+        return render_template('filter.html', topics=topics, start_date=start_date_formatted, end_date=end_date_formatted)
     else:
         return render_template('filter.html', topics=topics)
 
