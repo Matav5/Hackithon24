@@ -1,0 +1,92 @@
+import pandas as pd
+import pymongo as pm
+from datetime import datetime, timedelta,timezone
+"""
+def sensorsPipeline():
+    pipe = [
+        {
+            '$match': {
+                'payload.sensor': {
+                    '$exists': True, 
+                    '$ne': None
+                }
+            }
+        }, {
+            '$group': {
+                '_id': None, 
+                'sensors': {
+                    '$addToSet': '$payload.sensor'
+                }
+            }
+        }, {
+            '$unwind': '$sensors'
+        }, {
+            '$sort': {
+                'sensors': 1
+            }
+        }, {
+            '$project': {
+                '_id': 0, 
+                'sensor': '$sensors'
+            }
+        }
+    ]
+    return pipe
+def sensorPipeline():
+    pipe = [
+        {
+            '$match': {
+                'payload.sensor': 'BI-MO-I1'
+            }
+        }, {
+            '$sort': {
+                'timestamp': 1
+            }
+        }
+    ]
+    return pipe
+   
+def detectionPipeline():
+    pipe = [
+    {
+        '$match': {
+            'payload.detectionType': {
+                '$exists': True, 
+                '$ne': None
+            }
+        }
+    }, {
+        '$group': {
+            '_id': None, 
+            'detectionType': {
+                '$addToSet': '$payload.detectionType'
+            }
+        }
+    }, {
+        '$unwind': '$detectionType'
+    }, {
+        '$sort': {
+            'detectionType': 1
+        }
+    }, {
+        '$project': {
+            '_id': 0, 
+            'detectionType': '$detectionType'
+        }
+    }
+]
+    return pipe
+def matchDetectionPipeline(nazev):
+    pipe = [
+    {
+        '$match': {
+            'payload.detectionType': nazev
+        }
+    }, {
+        '$sort': {
+            'timestamp': 1
+        }
+    }
+]  
+    return pipe
+"""
