@@ -14,15 +14,15 @@
 {% block main %}
 <div class="container mt-5" style="background-color: #f8f9fa;">
     <div class="row justify-content-center">
-        <div class="col-md-12 mb-5" style="background-color: #e9ecef; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-            <h2>Časová řada za časový úsek</h2>
+        <div class="col-md-12 mb-5" style="background-color: #ffffff; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1);">
+            <h2>Časová řada za časový úsek (Sekundy)</h2>
             <div id="plot_in_time_s"></div>
         </div>
-        <div class="col-md-12 mb-5" style="background-color: #e9ecef; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-            <h2>Časová řada za časový úsek</h2>
+        <div class="col-md-12 mb-5" style="background-color: #ffffff; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1);">
+            <h2>Časová řada za časový úsek (Hodiny)</h2>
             <div id="plot_in_time_h"></div>
         </div>
-        <div class="col-md-12 mb-5" style="background-color: #e9ecef; padding: 20px; border-radius: 10px;">
+        <div class="col-md-12 mb-5" style="background-color: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1);">
             <h2>Sensory a jejich vyvolání</h2>
             <div id="plot_bar_sensor"></div>
         </div>
@@ -31,31 +31,35 @@
 
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <script>
-
 const WINDOW_SIZE = 35;
 document.addEventListener('DOMContentLoaded', function() {
     // Inicializace grafů
-    var initialDataS = [{y: [], type: 'scatter'}];
-    var initialDataH = [{y: [], type: 'scatter'}];
-    var initialDataSensor = [{y: [], type: 'bar'}];
+    var initialDataS = [{y: [], type: 'scatter', mode: 'lines+markers', marker: {color: 'blue'}}];
+    var initialDataH = [{y: [], type: 'scatter', mode: 'lines+markers', marker: {color: 'green'}}];
+    var initialDataSensor = [{y: [], type: 'bar', marker: {color: 'orange'}}];
 
     var layoutS = {
-        autosize: true, 
-        
-        xaxis: { title: 'Čas' },
+        autosize: true,
+        xaxis: { title: 'Čas', rangeselector: { buttons: [
+            {count: 1, label: '1m', step: 'minute', stepmode: 'backward'},
+            {count: 10, label: '10m', step: 'minute', stepmode: 'backward'},
+            {step: 'all'}
+        ]}},
         yaxis: { title: 'Hodnoty' }
     };
     
     var layoutH = {
-        autosize: true, 
-        
-        xaxis: { title: 'Čas' },
+        autosize: true,
+        xaxis: { title: 'Čas', rangeselector: { buttons: [
+            {count: 1, label: '1h', step: 'hour', stepmode: 'backward'},
+            {count: 6, label: '6h', step: 'hour', stepmode: 'backward'},
+            {step: 'all'}
+        ]}},
         yaxis: { title: 'Hodnoty' }
     };
 
     var layoutSensor = {
-        autosize: true, 
-       
+        autosize: true,
         xaxis: { title: 'Senzory' },
         yaxis: { title: 'Počet vyvolání' }
     };
