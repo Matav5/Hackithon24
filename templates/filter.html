@@ -1,26 +1,66 @@
 {% extends 'index.html' %}
 
 {% block content %}
-<form action="/cesta-pro-zpracovani-formulare" method="post">
-    <div class="form-group">
-      <label for="topicSelect">Vyberte topic:</label>
-      <select class="form-control" id="topicSelect" name="topic">
-        <!-- Příklad možností, které by měly být dynamicky načteny -->
-        <option value="topic1">Topic 1</option>
-        <option value="topic2">Topic 2</option>
-        <option value="topic3">Topic 3</option>
-      </select>
+<div class="container mt-5" style="background-color: #f8f9fa;">
+    <div class="row justify-content-center">
+        <h3>Vyberte si topic, který Vás zajíma:</h3>
+        <div class="col-md-12" style="background-color: #e9ecef; padding: 20px; border-radius: 10px;">
+            <form action="/cesta-pro-zpracovani-formulare" method="post">
+                <div class="form-row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="topicSelect">Vyberte topic:</label>
+                            <select class="form-control" id="topicSelect" name="topic" onchange="updateCategories()">
+                                {% for topic in topics %}
+                                <option value="{{ topic }}">{{ topic }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="categorySelect">Vyberte kategorii:</label>
+                            <select class="form-control" id="categorySelect" name="category">
+                                {% if topics %}
+                                {% for category in topics.values()|first %}
+                                <option value="{{ category }}">{{ category }}</option>
+                                {% endfor %}
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Odeslat</button>
+            </form>
+        </div>
     </div>
-    <div class="form-group">
-      <label for="categorySelect">Vyberte kategorii:</label>
-      <select class="form-control" id="categorySelect" name="category">
-        <!-- Příklad možností, které by měly být dynamicky načteny -->
-        <option value="category1">Kategorie 1</option>
-        <option value="category2">Kategorie 2</option>
-        <option value="category3">Kategorie 3</option>
-      </select>
-    </div>
-    <button type="submit" class="btn btn-primary">Odeslat</button>
-  </form>
+</div>
+
+<script type="text/javascript">
+    const topics = JSON.parse('{{ topics|tojson|safe }}');
+  
+    function updateCategories() {
+        const topicSelect = document.getElementById('topicSelect');
+        const categorySelect = document.getElementById('categorySelect');
+        const selectedTopic = topicSelect.value;
+        
+        // Clear previous options
+        categorySelect.innerHTML = '';
+
+        const categories = topics[selectedTopic];
+
+        categories.forEach(function(category) {
+            const option = document.createElement('option');
+            option.value = category;
+            option.text = category;
+            categorySelect.appendChild(option);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        updateCategories();
+    });
+</script>
 {% endblock %}
+
 

@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from flask_socketio import SocketIO
 import random
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -53,10 +53,22 @@ def graf():
     fig_bar = grafy.bar_chart(timestamps, data_flow_bps,'Sloupcov graf').to_html(full_html=False)
     return render_template('grafy.html', plot_scatter=fig_scatter, plot_bar=fig_bar)
 
-@app.route('/filter')
+@app.route('/filter', methods=['GET', 'POST'])
 def filter(): 
-    return render_template('filter.html')
-
+    topics = {
+        "topic1": ["category1", "category2", "category3"],
+        "topic2": ["category1", "category2", "category3"],
+        "topic3": ["category1", "category2"]
+    }
+    if request.method == 'POST':
+        selected_topic = request.form['topic']
+        selected_category = request.form['category']
+        # Process the selected topic and category as needed
+        # For example, filter data based on these selections
+        #return render_template('results.html', selected_topic=selected_topic, selected_category=selected_category)
+        pass
+    else:
+        return render_template('filter.html', topics=topics)
 
 
 
