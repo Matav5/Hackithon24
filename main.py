@@ -1,5 +1,4 @@
 from flask import Flask, render_template,request
-from flask_socketio import SocketIO
 import random
 from apscheduler.schedulers.background import BackgroundScheduler
 from grafy import grafy
