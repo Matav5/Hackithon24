@@ -31,6 +31,8 @@
 
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <script>
+
+const WINDOW_SIZE = 35;
 document.addEventListener('DOMContentLoaded', function() {
     // Inicializace grafů
     var initialDataS = [{y: [], type: 'scatter'}];
@@ -61,14 +63,35 @@ function fetchData() {
                     Plotly.extendTraces('plot_in_time_s', { y: [data.plot_in_time_s] }, [0]);
                     Plotly.extendTraces('plot_in_time_h', { y: [data.plot_in_time_h] }, [0]);
                     Plotly.extendTraces('plot_bar_sensor', { y: [data.plot_bar_sensor] }, [0]);
-                } else {
-                    console.error('Data is not in array format');
-                }
-            } else {
-                console.error('Graph not initialized');
-            }
-        })
-        .catch(error => console.error('Error fetching data:', error));
+                // Get current data length
+                let currentLength = Plotly.d3.select('#plot_in_time_s').node().data[0].y.length;
+
+// If the current data length exceeds the window size, shift the window
+if (currentLength > WINDOW_SIZE) {
+    Plotly.relayout('plot_in_time_s', {
+        xaxis: {
+            range: [currentLength - WINDOW_SIZE, currentLength]
+        }
+    });
+    Plotly.relayout('plot_in_time_h', {
+        xaxis: {
+            range: [currentLength - WINDOW_SIZE, currentLength]
+        }
+    });
+    Plotly.relayout('plot_bar_sensor', {
+        xaxis: {
+            range: [currentLength - WINDOW_SIZE, currentLength]
+        }
+    });
+}
+} else {
+console.error('Data is not in array format');
+}
+} else {
+console.error('Graph not initialized');
+}
+})
+.catch(error => console.error('Error fetching data:', error));
 }
 </script>
 {% endblock %}
