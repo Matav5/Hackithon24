@@ -110,5 +110,5 @@ def time_filter(od, do=None):
     return pipeline
 
 
-#print(get_topics());
-#print(get_topic("/Bilina",datetime(2024,5,24),datetime(2024,5,25)));
+print(get_topics());
+print(get_topic("/Bilina",datetime(2024,5,24),datetime(2024,5,25)));
