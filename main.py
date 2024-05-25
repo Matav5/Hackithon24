@@ -5,10 +5,6 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from grafy import grafy
 
 app = Flask(__name__)
-socketio = SocketIO(app)
-
-# Scheduler setup
-scheduler = BackgroundScheduler()
 
 sensors = ["sensor1", "sensor2", "sensor3", "sensor4", "sensor5", "sensor6"]
 timestamps = ["2024-05-24T21:14:30", "2024-05-24T21:14:31", "2024-05-24T21:14:32", "2024-05-24T21:14:33", "2024-05-24T21:14:34", "2024-05-24T21:14:35"]
@@ -29,22 +25,25 @@ def update_data():
     plot_in_time_h = grafy.area_chart(timestamps, data_flow_bps, 'Data Flow in bps').to_html(full_html=False)
     plot_bar_sensor = grafy.bar_chart(sensors, events_per_sensor, 'Events Per Sensor').to_html(full_html=False)
     
-    # odeslání HTML grafů
-    socketio.emit('data_update', {
-        'plot_in_time_s': plot_in_time_s,
-        'plot_in_time_h': plot_in_time_h,
-        'plot_bar_sensor': plot_bar_sensor
-    })
 
     return plot_in_time_s, plot_in_time_h, plot_bar_sensor
 
-scheduler.add_job(update_data, 'interval', seconds=5)
-scheduler.start()
+@app.route('/api/data')
+def api_data():
+    # Získání aktuálních dat
+    plot_in_time_s, plot_in_time_h, plot_bar_sensor = update_data()
+    return {
+        'plot_in_time_s': plot_in_time_s,
+        'plot_in_time_h': plot_in_time_h,
+        'plot_bar_sensor': plot_bar_sensor
+    }
+
 
 @app.route('/')
 def home():
     plot_in_time_s, plot_in_time_h, plot_bar_sensor = update_data()
     return render_template('home.html', plot_in_time_s=plot_in_time_s, plot_in_time_h=plot_in_time_h, plot_bar_sensor=plot_bar_sensor)
+
 
 # stránka na grafy - zaměřené pro jiné values
 @app.route('/grafy')
@@ -54,5 +53,6 @@ def graf():
     fig_bar = grafy.bar_chart(timestamps, data_flow_bps,'Sloupcov graf').to_html(full_html=False)
     return render_template('grafy.html', plot_scatter=fig_scatter, plot_bar=fig_bar)
 
+
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    app.run(debug=True)
