@@ -1,0 +1,49 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    <div class="container mt-5" style="background-color: #f8f9fa;">
+        <div class="row justify-content-center">
+            <div class="col-md-12" style="background-color: #e9ecef; padding: 20px; border-radius: 10px;">
+                <h1>Vítejte v naší webové aplikaci</h1>
+                <p>Tato webová aplikace je navržena pro efektivní zpracování a vizualizaci dat. Prozkoumejte různé typy datových vizualizací prostřednictvím našeho intuitivního rozhraní. Pokračujte v prohlížení našich funkcí a nástrojů pro další informace a lepší pochopení vašich dat. Generujte reporty, analyzujte trendy a využijte naše pokročilé analytické nástroje pro maximalizaci vašeho výkonu a efektivity.</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block main %}
+<div class="container mt-5" style="background-color: #f8f9fa;">
+    <div class="row justify-content-center">
+        <div class="col-md-12 mb-5" style="background-color: #e9ecef; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+            <h2>Časová řada za časový úsek</h2>
+            <div id="plot_in_time_s">{{ plot_in_time_s|safe }}</div>
+        </div>
+        <div class="col-md-12 mb-5" style="background-color: #e9ecef; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+            <h2>Časová řada za časový úsek</h2>
+            <div id="plot_in_time_h">{{ plot_in_time_h|safe }}</div>
+        </div>
+        <div class="col-md-12 mb-5" style="background-color: #e9ecef; padding: 20px; border-radius: 10px;">
+            <h2>Sensory a jejich vyvolání</h2>
+            <div id="plot_bar_sensor">{{ plot_bar_sensor|safe }}</div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function fetchData() {
+        fetch('/api/data')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('plot_in_time_s').innerHTML = data.plot_in_time_s;
+                document.getElementById('plot_in_time_h').innerHTML = data.plot_in_time_h;
+                document.getElementById('plot_bar_sensor').innerHTML = data.plot_bar_sensor;
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    }
+
+    setInterval(fetchData, 5000);
+</script>
+
+
+{% endblock %}
