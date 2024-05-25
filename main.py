@@ -94,6 +94,7 @@ def filter():
 
         start_date = request.form['start_date']
         end_date = request.form['end_date']
+        topic_form = request.form['topic']
         
         start_date_dt = datetime.fromisoformat(start_date)
         end_date_dt = datetime.fromisoformat(end_date)
@@ -103,7 +104,11 @@ def filter():
         end_date_formatted = end_date_dt.strftime('%Y, %m, %d, %H, %M')
         print(start_date_formatted)
         print(end_date_formatted)
+        print(topic_form)
         # dořešit možnou 0 na datumu nebo dni - pokud len(datum/mesic) neni 2
+
+        # Získej data podle formuláře:
+        
 
         return render_template('filter.html', topics=topics, start_date=start_date_formatted, end_date=end_date_formatted)
     else:
