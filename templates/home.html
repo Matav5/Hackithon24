@@ -16,37 +16,21 @@
     <div class="row justify-content-center">
         <div class="col-md-12 mb-5" style="background-color: #ffffff; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1);">
             <h2>Časová řada za časový úsek (Sekundy)</h2>
-            <div id="plot_in_time_s"></div>
+            <div id="plot_in_time_s">{{ plot_in_time_s|safe }}</div>
         </div>
         <div class="col-md-12 mb-5" style="background-color: #ffffff; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1);">
             <h2>Časová řada za časový úsek (Hodiny)</h2>
-            <div id="plot_in_time_h"></div>
+            <div id="plot_in_time_h">{{ plot_in_time_h|safe }}</div>
         </div>
-        <div class="col-md-12 mb-5" style="background-color: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1);">
-            <h2>Sensory a jejich vyvolání</h2>
-            <div id="plot_bar_sensor"></div>
-        </div>
+       
     </div>
 </div>
 
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <script>
-    var posledniCasUpdatu;
-    function fetchData() {
-        posledniCasUpdatu = new Date();
-        fetch('/api/data?date=' + posledniCasUpdatu.toISOString())
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                Plotly.newPlot('plot_in_time_s', data.plot_in_time_s);
-                Plotly.newPlot('plot_in_time_h', data.plot_in_time_h);
-                Plotly.newPlot('plot_bar_sensor', data.plot_bar_sensor);
-                posledniCasUpdatu => data.datum
-            })
-            .catch(error => console.error('Error fetching data:', error));
-    }
-const WINDOW_SIZE = 35;
-document.addEventListener('DOMContentLoaded', function() {
+   
+    const WINDOW_SIZE = 35;
+    document.addEventListener('DOMContentLoaded', function() {
     // Inicializace grafů
     var initialDataS = [{y: [], type: 'scatter', mode: 'lines+markers', marker: {color: 'blue'}}];
     var initialDataH = [{y: [], type: 'scatter', mode: 'lines+markers', marker: {color: 'green'}}];
@@ -78,30 +62,46 @@ document.addEventListener('DOMContentLoaded', function() {
         yaxis: { title: 'Počet vyvolání' }
     };
 
-    Plotly.newPlot('plot_in_time_s', initialDataS, layoutS);
+    /*Plotly.newPlot('plot_in_time_s', initialDataS, layoutS);
     Plotly.newPlot('plot_in_time_h', initialDataH, layoutH);
     Plotly.newPlot('plot_bar_sensor', initialDataSensor, layoutSensor);
-
+*/
     // Pravidelné volání fetchData
-    setInterval(fetchData, 5000);
+ //  setInterval(fetchData, 5000);
 });
+var posledniCasUpdatu;
 
 function fetchData() {
-    fetch('/api/data')
+    posledniCasUpdatu = new Date()
+    fetch('/api/data?date=' + posledniCasUpdatu.toISOString())
         .then(response => response.json())
         .then(data => {
             // Kontrola, zda jsou elementy grafů inicializovány
             if (Plotly.d3.select('#plot_in_time_s').node() && 
                 Plotly.d3.select('#plot_in_time_h').node() &&
-                Plotly.d3.select('#plot_bar_sensor').node()) {
+                Plotly.d3.select('#plot_bar_sensor').node())
+                {
                 // Kontrola, zda data jsou ve správném formátu
-                if (Array.isArray(data.plot_in_time_s) && 
-                    Array.isArray(data.plot_in_time_h) &&
-                    Array.isArray(data.plot_bar_sensor)) {
-                    Plotly.extendTraces('plot_in_time_s', { y: [data.plot_in_time_s] }, [0]);
-                    Plotly.extendTraces('plot_in_time_h', { y: [data.plot_in_time_h] }, [0]);
-                    Plotly.extendTraces('plot_bar_sensor', { y: [data.plot_bar_sensor] }, [0]);
+                plot_in_time_s = JSON.parse(data.plot_in_time_s)
+                plot_in_time_h = JSON.parse(data.plot_in_time_h)
+                plot_bar_sensor = JSON.parse(data.plot_bar_sensor)
+                    console.log(plot_in_time_s);
+                    console.log(plot_in_time_h);
+                    console.log(plot_bar_sensor );
+                    Plotly.extendTraces('plot_in_time_s', {
+                        x: plot_in_time_s.timestamp, 
+                        y: plot_in_time_s.messages_per_second
+                    }, [0]);
                     
+                    Plotly.extendTraces('plot_in_time_h', {
+                        x:  plot_in_time_h.timestamp, 
+                        y: plot_in_time_h.throughput_per_second
+                    }, [0]);
+                    
+                    Plotly.extendTraces('plot_bar_sensor', {
+                        x: plot_bar_sensor.timestamp, 
+                        y: plot_bar_sensor.messages_per_second
+                    }, [0]);
                     // Get current data length
                     let currentLength = Plotly.d3.select('#plot_in_time_s').node().data[0].y.length;
 
@@ -122,10 +122,10 @@ function fetchData() {
                                 range: [currentLength - WINDOW_SIZE, currentLength]
                             }
                         });
-                    }
-                } else {
-                    console.error('Data is not in array format');
-                }
+                    
+                    posledniCasUpdatu = new Date()
+
+                } 
             } else {
                 console.error('Graph not initialized');
             }

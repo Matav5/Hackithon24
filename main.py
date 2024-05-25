@@ -6,7 +6,7 @@ from grafy import grafy
 import data.zpracovani as zprac
 from datetime import timedelta,timezone,datetime
 import sys
-
+import json
 app = Flask(__name__)
 
 sensors = ["sensor1", "sensor2", "sensor3", "sensor4", "sensor5", "sensor6"]
@@ -35,10 +35,18 @@ def update_data(od=None):
 
 @app.route('/api/data', methods=['GET'])
 def api_data():
-    date = request.args.get('date')
-
-    messages_per_second, data_flow_bps, events_per_sensor = update_data(date)
     
+    date = request.args.get('date')
+    
+    print(date)
+    if date is None:
+        return "Ne"
+    
+    date = datetime.fromisoformat(date)
+    
+    messages_per_second, data_flow_bps, events_per_sensor = update_data(date)
+    print(messages_per_second.size)
+    print(data_flow_bps.size)
     return {
         'plot_in_time_s': messages_per_second.to_json(),
         'plot_in_time_h': data_flow_bps.to_json(),
@@ -51,7 +59,7 @@ def home():
     messages_per_second, data_flow_bps, events_per_sensor = update_data()
     
     
-    plot_in_time_s = grafy.scatter_plot(messages_per_second["timestamp"], messages_per_second["messages_per_second"], 'Messages Per Second').to_html(full_html=False)
+    plot_in_time_s = grafy.time_series_chart(messages_per_second["timestamp"], messages_per_second["messages_per_second"], 'Messages Per Second').to_html(full_html=False)
     plot_in_time_h = grafy.area_chart(data_flow_bps["timestamp"], data_flow_bps["throughput_per_second"], 'Data Flow in bps').to_html(full_html=False)
     plot_bar_sensor = grafy.bar_chart(events_per_sensor["timestamp"],events_per_sensor["messages_per_second"], 'Events Per Sensor').to_html(full_html=False)
     
