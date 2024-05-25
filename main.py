@@ -9,6 +9,10 @@ app = Flask(__name__)
 sensors = ["sensor1", "sensor2", "sensor3", "sensor4", "sensor5", "sensor6"]
 timestamps = ["2024-05-24T21:14:30", "2024-05-24T21:14:31", "2024-05-24T21:14:32", "2024-05-24T21:14:33", "2024-05-24T21:14:34", "2024-05-24T21:14:35"]
 
+events_per_sensor = []
+messages_per_second = []
+data_flow_bps = []
+
 def update_data():
     print('Update...')
     global events_per_sensor, messages_per_second, data_flow_bps
@@ -20,13 +24,8 @@ def update_data():
     print(messages_per_second)
     print(data_flow_bps)
 
-    # generování HTML grafů
-    plot_in_time_s = grafy.scatter_plot(timestamps, messages_per_second, 'Messages Per Second').to_html(full_html=False)
-    plot_in_time_h = grafy.area_chart(timestamps, data_flow_bps, 'Data Flow in bps').to_html(full_html=False)
-    plot_bar_sensor = grafy.bar_chart(sensors, events_per_sensor, 'Events Per Sensor').to_html(full_html=False)
-    
-
-    return plot_in_time_s, plot_in_time_h, plot_bar_sensor
+   
+    return events_per_sensor, messages_per_second, data_flow_bps
 
 @app.route('/api/data')
 def api_data():
@@ -42,6 +41,8 @@ def api_data():
 @app.route('/')
 def home():
     plot_in_time_s, plot_in_time_h, plot_bar_sensor = update_data()
+    plot_in_time_s = grafy.time_series_chart(timestamps, plot_in_time_s, 'Časov graf - sekundy').to_html(full_html=False)
+    plot_in_time_h = grafy.time_series_chart(timestamps, plot_in_time_h, 'Časov graf - hodiny').to_html(full_html=False)
     return render_template('home.html', plot_in_time_s=plot_in_time_s, plot_in_time_h=plot_in_time_h, plot_bar_sensor=plot_bar_sensor)
 
 
