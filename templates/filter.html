@@ -1,0 +1,26 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<form action="/cesta-pro-zpracovani-formulare" method="post">
+    <div class="form-group">
+      <label for="topicSelect">Vyberte topic:</label>
+      <select class="form-control" id="topicSelect" name="topic">
+        <!-- Příklad možností, které by měly být dynamicky načteny -->
+        <option value="topic1">Topic 1</option>
+        <option value="topic2">Topic 2</option>
+        <option value="topic3">Topic 3</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="categorySelect">Vyberte kategorii:</label>
+      <select class="form-control" id="categorySelect" name="category">
+        <!-- Příklad možností, které by měly být dynamicky načteny -->
+        <option value="category1">Kategorie 1</option>
+        <option value="category2">Kategorie 2</option>
+        <option value="category3">Kategorie 3</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Odeslat</button>
+  </form>
+{% endblock %}
+

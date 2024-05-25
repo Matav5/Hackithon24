@@ -53,6 +53,12 @@ def graf():
     fig_bar = grafy.bar_chart(timestamps, data_flow_bps,'Sloupcov graf').to_html(full_html=False)
     return render_template('grafy.html', plot_scatter=fig_scatter, plot_bar=fig_bar)
 
+@app.route('/filter')
+def filter(): 
+    return render_template('filter.html')
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
