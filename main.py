@@ -3,7 +3,7 @@ from flask_socketio import SocketIO
 import random
 from apscheduler.schedulers.background import BackgroundScheduler
 from grafy import grafy
-from numpy import np
+import numpy as np
 
 app = Flask(__name__)
 
