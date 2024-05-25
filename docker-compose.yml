@@ -10,5 +10,4 @@ services:
     environment:
       - FLASK_APP=app/main.py
       - FLASK_ENV=development
-    command: python main.py
     restart: always
