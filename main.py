@@ -31,7 +31,8 @@ def api_data():
     return {
         'plot_in_time_s': plot_in_time_s,
         'plot_in_time_h': plot_in_time_h,
-        'plot_bar_sensor': plot_bar_sensor
+        'plot_bar_sensor': plot_bar_sensor,
+        'timestamps': ["2024-05-24T21:14:30", "2024-05-24T21:14:31", "2024-05-24T21:14:32", "2024-05-24T21:14:33", "2024-05-24T21:14:34", "2024-05-24T21:14:35"]
     }
 
 
