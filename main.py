@@ -3,11 +3,20 @@ from flask_socketio import SocketIO
 import random
 from apscheduler.schedulers.background import BackgroundScheduler
 from grafy import grafy
+import numpy as np
 
 app = Flask(__name__)
 
 sensors = ["sensor1", "sensor2", "sensor3", "sensor4", "sensor5", "sensor6"]
 timestamps = ["2024-05-24T21:14:30", "2024-05-24T21:14:31", "2024-05-24T21:14:32", "2024-05-24T21:14:33", "2024-05-24T21:14:34", "2024-05-24T21:14:35"]
+
+treemap_labels = ['A', 'B', 'C', 'D', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2']
+treemap_parents = ['', '', '', '', 'A', 'A', 'B', 'B', 'C', 'C']
+treemap_values = [10, 20, 30, 40, 5, 5, 10, 10, 15, 15]
+data = np.random.randn(1000)
+labels = ['Category 1', 'Category 2', 'Category 3', 'Category 4']
+values = [40, 30, 20, 10]
+
 
 events_per_sensor = []
 messages_per_second = []
@@ -49,9 +58,28 @@ def home():
 @app.route('/grafy')
 def graf():
     # temp data na test
-    fig_scatter = grafy.scatter_plot(timestamps, messages_per_second,'Bodov graf').to_html(full_html=False)
-    fig_bar = grafy.bar_chart(timestamps, data_flow_bps,'Sloupcov graf').to_html(full_html=False)
-    return render_template('grafy.html', plot_scatter=fig_scatter, plot_bar=fig_bar)
+    timestamps = ['2024-01-01', '2024-01-02', '2024-01-03', '2024-01-04']
+    messages_per_second = [100, 120, 130, 110]
+    data_flow_bps = [200, 250, 300, 220]
+
+    # Placeholder data for treemap and box plot
+    treemap_labels = ['A', 'B', 'C', 'D', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2']
+    treemap_parents = ['', '', '', '', 'A', 'A', 'B', 'B', 'C', 'C']
+    treemap_values = [10, 20, 30, 40, 5, 5, 10, 10, 15, 15]
+    data = np.random.randn(1000)
+
+    fig_scatter = grafy.scatter_plot(timestamps, messages_per_second, 'Bodový graf').to_html(full_html=False)
+    fig_bar = grafy.bar_chart(timestamps, data_flow_bps, 'Sloupcový graf').to_html(full_html=False)
+    fig_time_series = grafy.time_series_chart(timestamps, messages_per_second, 'Časový graf throughputu').to_html(full_html=False)
+    fig_box_plot = grafy.box_plot(data, 'Box plot').to_html(full_html=False)
+    fig_treemap = grafy.treemap_chart(treemap_labels, treemap_parents, treemap_values, 'Treemap graf').to_html(full_html=False)
+
+    return render_template('grafy.html', 
+                           plot_scatter=fig_scatter, 
+                           plot_bar=fig_bar,
+                           plot_time_series=fig_time_series,
+                           plot_box_plot=fig_box_plot,
+                           plot_treemap=fig_treemap)
 
 @app.route('/filter', methods=['GET', 'POST'])
 def filter(): 
