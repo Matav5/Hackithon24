@@ -38,11 +38,31 @@ document.addEventListener('DOMContentLoaded', function() {
     var initialDataS = [{y: [], type: 'scatter'}];
     var initialDataH = [{y: [], type: 'scatter'}];
     var initialDataSensor = [{y: [], type: 'bar'}];
-    var layout = {autosize: true, title: 'Dynamický graf'};
 
-    Plotly.newPlot('plot_in_time_s', initialDataS, layout);
-    Plotly.newPlot('plot_in_time_h', initialDataH, layout);
-    Plotly.newPlot('plot_bar_sensor', initialDataSensor, layout);
+    var layoutS = {
+        autosize: true, 
+        title: 'Dynamický graf', 
+        xaxis: { title: 'Čas' },
+        yaxis: { title: 'Hodnoty' }
+    };
+    
+    var layoutH = {
+        autosize: true, 
+        title: 'Dynamický graf', 
+        xaxis: { title: 'Čas' },
+        yaxis: { title: 'Hodnoty' }
+    };
+
+    var layoutSensor = {
+        autosize: true, 
+        title: 'Dynamický graf', 
+        xaxis: { title: 'Senzory' },
+        yaxis: { title: 'Počet vyvolání' }
+    };
+
+    Plotly.newPlot('plot_in_time_s', initialDataS, layoutS);
+    Plotly.newPlot('plot_in_time_h', initialDataH, layoutH);
+    Plotly.newPlot('plot_bar_sensor', initialDataSensor, layoutSensor);
 
     // Pravidelné volání fetchData
     setInterval(fetchData, 5000);
@@ -63,35 +83,36 @@ function fetchData() {
                     Plotly.extendTraces('plot_in_time_s', { y: [data.plot_in_time_s] }, [0]);
                     Plotly.extendTraces('plot_in_time_h', { y: [data.plot_in_time_h] }, [0]);
                     Plotly.extendTraces('plot_bar_sensor', { y: [data.plot_bar_sensor] }, [0]);
-                // Get current data length
-                let currentLength = Plotly.d3.select('#plot_in_time_s').node().data[0].y.length;
+                    
+                    // Get current data length
+                    let currentLength = Plotly.d3.select('#plot_in_time_s').node().data[0].y.length;
 
-// If the current data length exceeds the window size, shift the window
-if (currentLength > WINDOW_SIZE) {
-    Plotly.relayout('plot_in_time_s', {
-        xaxis: {
-            range: [currentLength - WINDOW_SIZE, currentLength]
-        }
-    });
-    Plotly.relayout('plot_in_time_h', {
-        xaxis: {
-            range: [currentLength - WINDOW_SIZE, currentLength]
-        }
-    });
-    Plotly.relayout('plot_bar_sensor', {
-        xaxis: {
-            range: [currentLength - WINDOW_SIZE, currentLength]
-        }
-    });
-}
-} else {
-console.error('Data is not in array format');
-}
-} else {
-console.error('Graph not initialized');
-}
-})
-.catch(error => console.error('Error fetching data:', error));
+                    // If the current data length exceeds the window size, shift the window
+                    if (currentLength > WINDOW_SIZE) {
+                        Plotly.relayout('plot_in_time_s', {
+                            xaxis: {
+                                range: [currentLength - WINDOW_SIZE, currentLength]
+                            }
+                        });
+                        Plotly.relayout('plot_in_time_h', {
+                            xaxis: {
+                                range: [currentLength - WINDOW_SIZE, currentLength]
+                            }
+                        });
+                        Plotly.relayout('plot_bar_sensor', {
+                            xaxis: {
+                                range: [currentLength - WINDOW_SIZE, currentLength]
+                            }
+                        });
+                    }
+                } else {
+                    console.error('Data is not in array format');
+                }
+            } else {
+                console.error('Graph not initialized');
+            }
+        })
+        .catch(error => console.error('Error fetching data:', error));
 }
 </script>
 {% endblock %}
