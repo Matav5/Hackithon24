@@ -1,0 +1,53 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="container mt-5" style="background-color: #f8f9fa;">
+    <div class="row justify-content-center">
+        <h3>Vyberte si topic, který Vás zajíma:</h3>
+        <div class="col-md-12" style="background-color: #e9ecef; padding: 20px; border-radius: 10px;">
+            <form action="/filter" method="post">
+                <div class="form-row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="topicSelect">Vyberte topic:</label>
+                            <select class="form-control" id="topicSelect" name="topic" onchange="updateCategories()">
+                                {% for topic in topics %}
+                                <option value="{{ topic }}">{{ topic }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="startDate">Začátek:</label>
+                            <input type="datetime-local" class="form-control" id="startDate" name="start_date">
+                        </div>
+                        <div class="form-group">
+                            <label for="endDate">Konec:</label>
+                            <input type="datetime-local" class="form-control" id="endDate" name="end_date">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Odeslat</button>
+            </form>
+        </div>
+    </div>
+</div>
+<h2>{{ start_date }}</h2>
+<h2>{{ end_date }}</h2>
+<h2>{{ topic }}</h2>
+
+<script type="text/javascript">
+    const topics = JSON.parse('{{ topics|tojson|safe }}');
+  
+    function updateCategories() {
+        // This function can be modified or used if needed for dynamic updates based on topic selection
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initial setup or actions after document is ready
+    });
+</script>
+{% endblock %}
+
+

@@ -18,16 +18,42 @@
 {% block main %}
     <div class="container mt-5" style="background-color: #f8f9fa;">
         <div class="row justify-content-center">
-            <div class="col-md-12 mb-5" style="background-color: #e9ecef; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+            <div class="col-md-6 mb-5" style="background-color: #e9ecef; padding: 20px; border-radius: 10px;">
                 <div class="d-flex justify-content-center">
-                    {{ plot_scatter|safe }}
+                    <div style="width: 100%;">
+                        {{ plot_scatter|safe }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-5" style="background-color: #e9ecef; padding: 20px; border-radius: 10px;">
+                <div class="d-flex justify-content-center">
+                    <div style="width: 100%;">
+                        {{ plot_bar|safe }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-5" style="background-color: #e9ecef; padding: 20px; border-radius: 10px;">
+                <div class="d-flex justify-content-center">
+                    <div style="width: 100%;">
+                        {{ plot_time_series|safe }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-5" style="background-color: #e9ecef; padding: 20px; border-radius: 10px;">
+                <div class="d-flex justify-content-center">
+                    <div style="width: 100%;">
+                        {{ plot_box_plot|safe }}
+                    </div>
                 </div>
             </div>
             <div class="col-md-12 mb-5" style="background-color: #e9ecef; padding: 20px; border-radius: 10px;">
                 <div class="d-flex justify-content-center">
-                    {{ plot_bar|safe }}
+                    <div style="width: 100%;">
+                        {{ plot_treemap|safe }}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 {% endblock %}
+

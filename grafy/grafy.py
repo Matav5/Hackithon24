@@ -1,8 +1,6 @@
 import plotly.graph_objects as go
 import numpy as np
 
-
-# Najít graf stromové struktury
 # Data for the charts
 timestamps = ['2024-01-01', '2024-01-02', '2024-01-03', '2024-01-04']
 throughput_values = [100, 120, 130, 110]
@@ -14,6 +12,9 @@ data = np.random.randn(1000)
 z_values = np.random.rand(10, 10)
 x_labels = list('ABCDEFGHIJ')
 y_labels = list('abcdefghij')
+treemap_labels = ['A', 'B', 'C', 'D', 'A1', 'A2', 'B1', 'B2', 'C1', 'C2']
+treemap_parents = ['', '', '', '', 'A', 'A', 'B', 'B', 'C', 'C']
+treemap_values = [10, 20, 30, 40, 5, 5, 10, 10, 15, 15]
 
 def scatter_plot(x_categories, y_values, title='Bodový graf', marker_size=15):
     fig = go.Figure(data=[go.Scatter(x=x_categories, y=y_values, mode='markers', 
@@ -102,6 +103,34 @@ def histogram(data, title='Histogram'):
                       paper_bgcolor='rgba(0,0,0,0)')
     return fig
 
+def treemap_chart(labels, parents, values, title='Treemap graf'):
+    fig = go.Figure(go.Treemap(
+        labels=labels,
+        parents=parents,
+        values=values,
+        marker=dict(
+            colors=['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']
+        )
+    ))
+
+    fig.update_layout(
+        title=title,
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='rgba(0,0,0,0)'
+    )
+
+    return fig
+
+def box_plot(data, title='Box plot'):
+    fig = go.Figure(data=[go.Box(y=data, marker_color='darkblue')])
+    fig.update_layout(
+        title=title,
+        yaxis_title='Hodnoty',
+        yaxis=dict(gridcolor='lightgray'),
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='rgba(0,0,0,0)'
+    )
+    return fig
 # Generate the figures
 #scatter_fig = scatter_plot(x_categories, y_values)
 #area_fig = area_chart(x_categories, y_values)
