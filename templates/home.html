@@ -16,17 +16,52 @@
     <div class="row justify-content-center">
         <div class="col-md-12 mb-5" style="background-color: #e9ecef; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
             <h2>Časová řada za časový úsek</h2>
-            {{ plot_in_time_s|safe }}
+            <div id="plot_in_time_s">{{ plot_in_time_s|safe }}</div>
         </div>
         <div class="col-md-12 mb-5" style="background-color: #e9ecef; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
             <h2>Časová řada za časový úsek</h2>
-            {{ plot_in_time_h|safe }}
+            <div id="plot_in_time_h">{{ plot_in_time_h|safe }}</div>
         </div>
         <div class="col-md-12 mb-5" style="background-color: #e9ecef; padding: 20px; border-radius: 10px;">
             <h2>Sensory a jejich vyvolání</h2>
-            {{ plot_bar_sensor|safe }}
+            <div id="plot_bar_sensor">{{ plot_bar_sensor|safe }}</div>
         </div>
     </div>
 </div>
+
+
+<script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+<script type="text/javascript">
+    var socket = io();
+
+    socket.on('data_update', function(data) {
+        console.log('Data received from server:', data);
+        // Příklad aktualizace elementů HTML s novými grafy
+        if (data.plot_in_time_s) {
+            document.getElementById('plot_in_time_s').innerHTML = data.plot_in_time_s;
+        } else {
+            document.getElementById('plot_in_time_s').innerHTML = '<p>Čekání na data...</p>';
+        }
+        if (data.plot_in_time_h) {
+            document.getElementById('plot_in_time_h').innerHTML = data.plot_in_time_h;
+        } else {
+            document.getElementById('plot_in_time_h').innerHTML = '<p>Čekání na data...</p>';
+        }
+        if (data.plot_bar_sensor) {
+            document.getElementById('plot_bar_sensor').innerHTML = data.plot_bar_sensor;
+        } else {
+            document.getElementById('plot_bar_sensor').innerHTML = '<p>Čekání na data...</p>';
+        }
+    });
+
+    socket.on('connect', function() {
+        console.log('Connected to server');
+    });
+
+    socket.on('disconnect', function() {
+        console.log('Disconnected from server');
+    });
+</script>
+
 
 {% endblock %}
