@@ -31,21 +31,44 @@
 
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Pravidelné volání fetchData
-        setInterval(fetchData, 5000);
-    });
+document.addEventListener('DOMContentLoaded', function() {
+    // Inicializace grafů
+    var initialDataS = [{y: [], type: 'scatter'}];
+    var initialDataH = [{y: [], type: 'scatter'}];
+    var initialDataSensor = [{y: [], type: 'bar'}];
+    var layout = {autosize: true, title: 'Dynamický graf'};
 
-    function fetchData() {
-        fetch('/api/data')
-            .then(response => response.json())
-            .then(data => {
-                // Aktualizace grafů novými daty
-                Plotly.extendTraces('plot_in_time_s', { y: [data.plot_in_time_s] }, [0]);
-                Plotly.extendTraces('plot_in_time_h', { y: [data.plot_in_time_h] }, [0]);
-                Plotly.extendTraces('plot_bar_sensor', { y: [data.plot_bar_sensor] }, [0]);
-            })
-            .catch(error => console.error('Error fetching data:', error));
-    }
+    Plotly.newPlot('plot_in_time_s', initialDataS, layout);
+    Plotly.newPlot('plot_in_time_h', initialDataH, layout);
+    Plotly.newPlot('plot_bar_sensor', initialDataSensor, layout);
+
+    // Pravidelné volání fetchData
+    setInterval(fetchData, 5000);
+});
+
+function fetchData() {
+    fetch('/api/data')
+        .then(response => response.json())
+        .then(data => {
+            // Kontrola, zda jsou elementy grafů inicializovány
+            if (Plotly.d3.select('#plot_in_time_s').node() && 
+                Plotly.d3.select('#plot_in_time_h').node() &&
+                Plotly.d3.select('#plot_bar_sensor').node()) {
+                // Kontrola, zda data jsou ve správném formátu
+                if (Array.isArray(data.plot_in_time_s) && 
+                    Array.isArray(data.plot_in_time_h) &&
+                    Array.isArray(data.plot_bar_sensor)) {
+                    Plotly.extendTraces('plot_in_time_s', { y: [data.plot_in_time_s] }, [0]);
+                    Plotly.extendTraces('plot_in_time_h', { y: [data.plot_in_time_h] }, [0]);
+                    Plotly.extendTraces('plot_bar_sensor', { y: [data.plot_bar_sensor] }, [0]);
+                } else {
+                    console.error('Data is not in array format');
+                }
+            } else {
+                console.error('Graph not initialized');
+            }
+        })
+        .catch(error => console.error('Error fetching data:', error));
+}
 </script>
 {% endblock %}
