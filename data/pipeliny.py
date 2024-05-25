@@ -67,6 +67,76 @@ def topicPipeline(nazev):
         
     return topicPipeline
 
+
+
+def cetnostiPipeline():
+    pipe = [
+    {
+        '$project': {
+            'payload': 1
+        }
+    }, {
+        '$addFields': {
+            'payloadFields': {
+                '$cond': {
+                    'if': {
+                        '$eq': [
+                            {
+                                '$type': '$payload'
+                            }, 'object'
+                        ]
+                    }, 
+                    'then': {
+                        '$objectToArray': '$payload'
+                    }, 
+                    'else': {
+                        '$map': {
+                            'input': {
+                                '$cond': {
+                                    'if': {
+                                        '$isArray': '$payload'
+                                    }, 
+                                    'then': '$payload', 
+                                    'else': []
+                                }
+                            }, 
+                            'as': 'item', 
+                            'in': {
+                                '$objectToArray': '$$item'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }, {
+        '$unwind': {
+            'path': '$payloadFields', 
+            'preserveNullAndEmptyArrays': True
+        }
+    }, {
+        '$unwind': {
+            'path': '$payloadFields', 
+            'preserveNullAndEmptyArrays': True
+        }
+    }, {
+        '$group': {
+            '_id': '$payloadFields.k', 
+            'count': {
+                '$sum': 1
+            }
+        }
+    }, {
+        '$sort': {
+            'count': -1
+        }
+    }
+]
+    return pipe
+
+
+
+"""
 def sensorsPipeline():
     pipe = [
         {
@@ -141,11 +211,11 @@ def detectionPipeline():
     }
 ]
     return pipe
-def matchDetectionPipeline():
+def matchDetectionPipeline(nazev):
     pipe = [
     {
         '$match': {
-            'payload.detectionType': 'detector'
+            'payload.detectionType': nazev
         }
     }, {
         '$sort': {
@@ -154,3 +224,4 @@ def matchDetectionPipeline():
     }
 ]  
     return pipe
+"""

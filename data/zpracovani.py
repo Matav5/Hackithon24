@@ -42,6 +42,20 @@ def time_filter(od, do=None):
     ]
     return pipeline
 
+
+def get_cetnosti(od=None, do=None):
+    ls = list()
+    for item in time_filter(od, do):
+        ls.append(item)
+    for item in pipeliny.cetnostiPipeline():
+        ls.append(item)    
+    data_list = list(collection.aggregate(ls))
+    df = pd.DataFrame(data_list)
+    df.rename(columns={'_id': 'nazev'}, inplace=True)
+    return df
+#vycistit zdokumenetovat, udělat četnosti, devops
+
 if __name__ == "__main__":
     print(get_topics());
-    print(get_topic("/Bilina",datetime(2024,5,24,22),datetime(2024,5,24,22,5)));
+    print(get_cetnosti());
+  #  print(get_topic("/Bilina",datetime(2024,5,24,22),datetime(2024,5,24,22,5)));
