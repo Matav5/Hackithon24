@@ -23,13 +23,10 @@ def update_data():
     print(events_per_sensor)
     print(messages_per_second)
     print(data_flow_bps)
-
-   
     return events_per_sensor, messages_per_second, data_flow_bps
 
 @app.route('/api/data')
 def api_data():
-    # Získání aktuálních dat
     plot_in_time_s, plot_in_time_h, plot_bar_sensor = update_data()
     return {
         'plot_in_time_s': plot_in_time_s,
@@ -43,6 +40,7 @@ def home():
     plot_in_time_s, plot_in_time_h, plot_bar_sensor = update_data()
     plot_in_time_s = grafy.time_series_chart(timestamps, plot_in_time_s, 'Časov graf - sekundy').to_html(full_html=False)
     plot_in_time_h = grafy.time_series_chart(timestamps, plot_in_time_h, 'Časov graf - hodiny').to_html(full_html=False)
+    plot_bar_sensor = grafy.bar_chart(timestamps, plot_bar_sensor, 'Sloupcov graf - senzory').to_html(full_html=False)
     return render_template('home.html', plot_in_time_s=plot_in_time_s, plot_in_time_h=plot_in_time_h, plot_bar_sensor=plot_bar_sensor)
 
 
